@@ -1,2 +1,8 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿namespace ConsoleApp4
+{
+    class Programm{
+        public void Main(string[] a){
+                
+        }
+    }
+}
