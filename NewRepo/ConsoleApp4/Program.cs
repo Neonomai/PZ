@@ -10,26 +10,26 @@ class Program
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-        string jsonFilePath = "result.json"; // Укажите путь к вашему JSON-файлу
-        string excelFilePath = "output.xlsx"; // Укажите путь для сохранения Excel-файла
+        string jsonFilePath = "result.json"; 
+        string excelFilePath = "output.xlsx"; 
 
-        // Загрузка JSON-данных
+        
         var jsonData = File.ReadAllText(jsonFilePath);
         var jsonObject = JObject.Parse(jsonData);
 
-        // Создание нового Excel-документа
+        
         using (ExcelPackage package = new ExcelPackage())
         {
-            // Создание нового листа
+            
             ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("Отчет");
 
-            // Установка заголовков таблицы
+           
             worksheet.Cells[1, 1].Value = "Hostname";
             worksheet.Cells[1, 2].Value = "Date";
             worksheet.Cells[1, 3].Value = "Problem";
             worksheet.Cells[1, 4].Value = "Level";
 
-            // Установка стилей заголовков
+            
             using (var range = worksheet.Cells[1, 1, 1, 4])
             {
                 range.Style.Font.Bold = true;
@@ -37,15 +37,15 @@ class Program
                 range.Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.LightGray);
             }
 
-            // Заполнение таблицы данными из JSON
+            
             var messages = jsonObject["messages"] as JArray;
             if (messages != null)
             {
                 int rowIndex = 2;
                 foreach (var message in messages)
                 {
-                    // Извлечение данных
-                    string hostname = "Graylogbot"; // Укажите hostname, если он доступен в JSON
+                    
+                    string hostname = "Graylogbot"; 
                     string date = message["date"]?.ToString();
                     string problem = string.Empty;
                     string level = string.Empty;
@@ -69,7 +69,7 @@ class Program
                         }
                     }
 
-                    // Заполнение строки таблицы
+                    
                     worksheet.Cells[rowIndex, 1].Value = hostname;
                     worksheet.Cells[rowIndex, 2].Value = date;
                     worksheet.Cells[rowIndex, 3].Value = problem;
@@ -78,7 +78,7 @@ class Program
                 }
             }
 
-            // Сохранение Excel-файла
+            
             FileInfo excelFile = new FileInfo(excelFilePath);
             package.SaveAs(excelFile);
         }
